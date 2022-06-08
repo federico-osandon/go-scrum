@@ -6,7 +6,7 @@ const Tasks = () => {
         <>
             <Header />
             <div className='container'>
-                <h1>Task</h1>
+                <h1>Aca va cualquier cosa que querramos mostrar TASK</h1>
             </div>
         </>    
     )
