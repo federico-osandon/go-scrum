@@ -1,0 +1,80 @@
+export const cardsData = [
+    {
+        id: 1,
+        title: 'Task 1',
+        dateTime: '2019-12-31  16:40 hs.',
+        creator: 'John Doe',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur tempor, nisi nisl aliquam eros, eget tincidunt nisl nisl eget consectetur tempor.',
+        type: 'InProcess',
+        priority: 'high',
+        assignedTo: 'John Doe',
+        createdOn: '2019-12-31  16:40 hs.',
+        updatedBy: 'John Doe',
+        updatedOn: '2019-12-31  16:40 hs.'
+    },
+    {
+        id: 2,
+        title: 'Task 2',
+        dateTime: '2019-12-31  16:40 hs.',
+        creator: 'John Doe',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur tempor, nisi nisl aliquam eros, eget tincidunt nisl nisl eget consectetur tempor.',
+        type: 'InProcess',
+        priority: 'high',
+        assignedTo: 'John Doe',
+        createdOn: '2019-12-31  16:40 hs.',
+        updatedBy: 'John Doe',
+        updatedOn: '2019-12-31  16:40 hs.'
+    },
+    {
+        id: 3,
+        title: 'Task 3',
+        dateTime: '2019-12-31  16:40 hs.',
+        creator: 'John Doe',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur tempor, nisi nisl aliquam eros, eget tincidunt nisl nisl eget consectetur tempor.',
+        type: 'finished',
+        priority: 'medium',
+        assignedTo: 'John Doe',
+        createdOn: '2019-12-31  16:40 hs.',
+        updatedBy: 'John Doe',
+        updatedOn: '2019-12-31  16:40 hs.'
+    },
+    {
+        id: 4,
+        title: 'Task 4',
+        dateTime: '2019-12-31  16:40 hs.',
+        creator: 'John Doe',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur tempor, nisi nisl aliquam eros, eget tincidunt nisl nisl eget consectetur tempor.',
+        type: 'finished',
+        priority: 'medium',
+        assignedTo: 'John Doe',
+        createdOn: '2019-12-31  16:40 hs.',
+        updatedBy: 'John Doe',
+        updatedOn: '2019-12-31  16:40 hs.'
+    },
+    {
+        id: 5,
+        title: 'Task 5',
+        dateTime: '2019-12-31  16:40 hs.',
+        creator: 'John Doe',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur tempor, nisi nisl aliquam eros, eget tincidunt nisl nisl eget consectetur tempor.',
+        type: 'new',
+        priority: 'low',
+        assignedTo: 'John Doe',
+        createdOn: '2019-12-31  16:40 hs.',
+        updatedBy: 'John Doe',
+        updatedOn: '2019-12-31  16:40 hs.'
+    },
+    {
+        id: 6,
+        title: 'Task 6',
+        dateTime: '2019-12-31  16:40 hs.',
+        creator: 'John Doe',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur tempor, nisi nisl aliquam eros, eget tincidunt nisl nisl eget consectetur tempor.',
+        type: 'new',
+        priority: 'low',
+        assignedTo: 'John Doe',
+        createdOn: '2019-12-31  16:40 hs.',
+        updatedBy: 'John Doe',
+        updatedOn: '2019-12-31  16:40 hs.'
+    }
+]
