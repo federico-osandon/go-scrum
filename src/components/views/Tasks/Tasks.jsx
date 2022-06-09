@@ -2,6 +2,7 @@
 import { useResize } from "../../../hooks/useResize"
 import Card from "../../card/Card"
 import Header from "../../Header/Header"
+import TaskForm from "../../TaskForm/TaskForm"
 import { cardsData } from "./data"
 
 import './Task.css'
@@ -18,7 +19,7 @@ const Tasks = () => {
         return { string: str, addButton: false }        
     }
 
-    const CardList = (cards) => {
+    const CardList = ({ cards }) => {
         return cards.map((card) => <Card key={card.id} card={card} limitString={ limitString } />)
     }
 
@@ -26,6 +27,7 @@ const Tasks = () => {
         <>
             <Header />
             <main id='task'>
+                <TaskForm />
                 <section className="wraper_list">
                     <div className="list_header">
                         <h2>Mis Tareas</h2>
@@ -33,23 +35,21 @@ const Tasks = () => {
                     {
                         isPhone ? (
                             <div className="list phone">
-                                { CardList(cardsData)}                                                                              
+                                <CardList cards={cardsData} />                                                                             
                             </div>
                         ) : (
                             <div className="group_list">
                                 <div className="list">
                                     <h4>Nuevas</h4>
-                                    <Card limitString={ limitString } />
+                                    <CardList cards={cardsData} />
                                 </div>
                                 <div className="list">
                                     <h4>En Proceso</h4>
-                                    <Card limitString={ limitString } />
-                                    <Card limitString={ limitString } />
+                                    <CardList cards={cardsData} />                                    
                                 </div>
                                 <div className="list">
                                     <h4>Finalizadas</h4>
-                                    <Card limitString={ limitString } />                           
-                                    <Card limitString={ limitString } />                           
+                                    <CardList cards={cardsData} />                                                              
                                 </div>
                             </div>
                         )
