@@ -26,9 +26,9 @@ const Tasks = () => {
     return (
         <>
             <Header />
-            <main id='task'>
+            <main id='tasks'>
                 <TaskForm />
-                <section className="wraper_list">
+                <section className="wrapper_list">
                     <div className="list_header">
                         <h2>Mis Tareas</h2>
                     </div>

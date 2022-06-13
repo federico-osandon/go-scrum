@@ -1,26 +1,20 @@
-.tasks {
-    padding: 20px 15px 5px;
-    display: flex;
-    flex-direction: column;
-}
-
-.tasks-form {
+.task-form {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.tasks-form h2 {
+.task-form h2 {
     margin: 0;
 }
 
-.tasks-form > form {
+.task-form > form {
     width: 100%;
     padding-right: 15px;
     box-sizing: border-box;
 }
  
-task-form > form > div {
+.task-form > form > div {
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
@@ -29,6 +23,59 @@ task-form > form > div {
     margin-bottom: 0.6rem;
 }
 
-.tasks-form > form > div > div {
+.task-form > form > div > div {
     flex: 1;
+}
+
+.task-form input, 
+.task-form select,
+.task-form textarea { 
+    border: 0.5px solid #9e9e9e;
+    border-radius: 8px;
+    color: #000;
+    flex: 1 1;
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+    outline: 0;
+    padding: 0.745rem 0.745rem;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+
+}
+
+.task-form textarea {
+    min-height: 140px;    
+}
+
+.task-form button {
+    transition: all 0.3s ease-out;
+    background-color: var(--global-primary-color);
+    border-radius: var(--global-radius);
+    border: 0;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    justify-content: center;
+}
+
+.task-form button:hover {
+    background-color: var(--global-primary-color);
+    border-radius: var(--global-radius);
+    border: 1px solid var(--global-primary-color);
+    background-color: white;
+    padding: 10px !important;
+}
+
+@media ( min-width: 1300px ) {
+    #tasks .wrapper_list {
+        flex: 1;
+    }
+
+    .task-form > form > div {
+        flex-direction: row;
+    }
+    
 }

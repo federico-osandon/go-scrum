@@ -1,8 +1,11 @@
-import './TaskForm.css'
+// import './TaskForm.css'
 
 const TaskForm = () => {
   return (
-    <section className="task-form">TaskForm</section>
+    <section className="task-form">
+      <h2>Crear Tarea</h2>
+      <p>Crea tus tareas</p>
+    </section>
   )
 }
 
