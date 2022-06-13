@@ -6,10 +6,11 @@
 
 #tasks .wrapper_list {
     background-color: #fafafa;
-    border-radius: var(--global-radius);
-    height: calc(100vh - 100px);
+    border-radius: var(--global-border-radius);
+    /* height: calc(100vh - 100px); */
     padding: 10px;
     box-shadow: 0 2px 5px #dbdbdb;
+    flex: 2;
 }
 
 #tasks .wrapper_list h2 {
