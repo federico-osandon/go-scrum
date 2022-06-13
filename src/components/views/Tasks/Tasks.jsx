@@ -5,7 +5,7 @@ import Header from "../../Header/Header"
 import TaskForm from "../../TaskForm/TaskForm"
 import { cardsData } from "./data"
 
-import './Task.css'
+import './Task.style.css'
 
 
 const Tasks = () => {
