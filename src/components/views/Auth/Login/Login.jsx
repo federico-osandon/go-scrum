@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 
-import './Login.css'
+import '../Auth.css'
 
 const Login = () => {
 
@@ -72,6 +72,9 @@ const Login = () => {
                 </div>
                 <div>                    
                     <button type="submit">Enviar</button>
+                </div>
+                <div>
+                    <Link to='/register' >Registrarme</Link>
                 </div>
             </form>
         </div>

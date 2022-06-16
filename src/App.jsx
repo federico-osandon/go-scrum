@@ -2,8 +2,9 @@ import { lazy, Suspense } from 'react'
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import Login from './components/views/Login'
-import Register from './components/views/Register'
+
+import Login from './components/views/Auth/Login'
+import Register from './components/views/Auth/Register'
 import Tasks from './components/views/Tasks/Tasks'
 // import Error404 from './components/views/Error404/Error404'
 
