@@ -8,7 +8,7 @@ import { Switch, FormControlLabel } from '@mui/material'
 const Register = () => {
     const [data, setData] = useState({})
     const id = useId()
-    console.log(`id: ${id}`)
+    // console.log(`id: ${id}`)
 
     useEffect(() => {
         fetch('http://localhost:3000/assets/data/data.json')
@@ -17,7 +17,7 @@ const Register = () => {
         .catch( err => console.log(err) )
     }, [])
 
-    console.log(data)
+    // console.log(data)
     const initialValues = {
         userName:'',
         password:'',
@@ -44,16 +44,40 @@ const Register = () => {
     })
 
     const handleChangeContinent = (value) => {
+        // console.log(value)
         setFieldValue('continent', value)
-        if(value === 'América'){
-            setFieldValue('region', 'otro')
-        }
+        if(value !== 'América')setFieldValue('region', 'Otro')
+        
         // console.log(event)
     }
 
     const onSubmit = () => {        
-        //window.location = 'https://cybermap.kaspersky.com'        
-        alert('Registrado')
+        //window.location = 'https://cybermap.kaspersky.com'
+        //https://goscrum-api.alkemy.org/ 
+        const teamID = !values.teamID ?  uuidv4() : values.teamID 
+        // console.log({ teamID })  
+        fetch('https://goscrum-api.alkemy.org/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user: {
+                    userName: values.userName,
+                    password: values.password,
+                    email: values.email,
+                    teamID,
+                    role: values.role,
+                    continent: values.continent,
+                    region: values.region
+                }
+            })
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+
+
+       
     }
 
     const formik = useFormik({initialValues, validationSchema, onSubmit})
@@ -164,7 +188,8 @@ const Register = () => {
                                 name='region' 
                                 className={ errors.region && touched.region ? 'error' : '' }
                                 value={values.region}
-                                onChange={handleChange}                               onBlur={handleBlur}
+                                onChange={handleChange}                               
+                                onBlur={handleBlur}
                             >         
                                 <option value="">Elegir una Región...</option>  
                                 { 
