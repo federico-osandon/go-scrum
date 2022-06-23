@@ -43,6 +43,13 @@ const Register = () => {
         region: Yup.string().required(required)
     })
 
+    const handleChangeContinent = (value) => {
+        setFieldValue('continent', value)
+        if(value === 'América'){
+            setFieldValue('region', 'otro')
+        }
+        // console.log(event)
+    }
 
     const onSubmit = () => {        
         //window.location = 'https://cybermap.kaspersky.com'        
@@ -51,7 +58,7 @@ const Register = () => {
 
     const formik = useFormik({initialValues, validationSchema, onSubmit})
 
-    const { handleSubmit, handleChange, errors, values, touched, handleBlur } = formik
+    const { handleSubmit, handleChange, errors, values, touched, handleBlur, setFieldValue } = formik
 
     return (
         <div className='auth'>
@@ -94,24 +101,29 @@ const Register = () => {
                     />
                     { errors.email && touched.email && <div>{errors.email}</div>}
                 </div>
-                <FormControlLabel>
-                    <Switch 
-                        name="switch"
-                        value={values.switch}
-                        onChange={() => formik.setFieldValue('switch', !formik.values.switch)}
-                        color="secondary"
-                    />
-                </FormControlLabel>
-                <div>
-                    <label>Ingrese Identificador de Equipo</label>
-                    <input 
-                        type="text" 
-                        name="teamID" 
-                        value={values.teamID}
-                        onChange={handleChange}
-                    />
+                <FormControlLabel
+                    control={
+                            <Switch 
+                                value={values.switch}
+                                onChange={() => formik.setFieldValue('switch', !formik.values.switch)}
+                                name="switch"
+                                color="secondary"
+                            />
+                        }
+                    label="¿Pertenecés a un equipo ya creado?"
+                />
+                { values.switch &&
                     <div>
-                </div>
+                        <label>Ingrese Identificador de Equipo</label>
+                        <input 
+                            type="text" 
+                            name="teamID" 
+                            value={values.teamID}
+                            onChange={handleChange}
+                        />
+                    </div>                
+                }
+                <div>
                     <label>Rol</label>
                     <select                       
                         name='role' 
@@ -133,7 +145,7 @@ const Register = () => {
                         name='continent' 
                         className={ errors.continent && touched.continent ? 'error' : '' }
                         value={values.continent}
-                        onChange={handleChange}
+                        onChange={event => handleChangeContinent(event.currentTarget.value)}
                         onBlur={handleBlur}
                     >         
                         <option value="">Eligir un Continente...</option>  
@@ -152,8 +164,7 @@ const Register = () => {
                                 name='region' 
                                 className={ errors.region && touched.region ? 'error' : '' }
                                 value={values.region}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
+                                onChange={handleChange}                               onBlur={handleBlur}
                             >         
                                 <option value="">Elegir una Región...</option>  
                                 { 
