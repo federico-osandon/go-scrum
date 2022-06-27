@@ -1,17 +1,23 @@
 import { useState, useEffect, useId } from 'react'
 import { useFormik } from 'formik'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import * as Yup  from 'yup'
 import { v4 as uuidv4 } from 'uuid'
 import { Switch, FormControlLabel } from '@mui/material'
+// import.meta.env.VITE_REACT_APP_URL_LOCAL
+const { 
+    VITE_REACT_APP_API_ENDPOINT: API_URL ,
+    VITE_REACT_APP_URL_LOCAL: URL_LOCAL
+} = import.meta.env
 
 const Register = () => {
     const [data, setData] = useState({})
     const id = useId()
+    const navigate = useNavigate()
     // console.log(`id: ${id}`)
 
     useEffect(() => {
-        fetch('http://localhost:3000/assets/data/data.json')
+        fetch(`${URL_LOCAL}assets/data/data.json`)
         .then(res => res.json())
         .then(data => setData(data.results))
         .catch( err => console.log(err) )
@@ -56,7 +62,8 @@ const Register = () => {
         //https://goscrum-api.alkemy.org/ 
         const teamID = !values.teamID ?  uuidv4() : values.teamID 
         // console.log({ teamID })  
-        fetch('https://goscrum-api.alkemy.org/auth/register', {
+        // fetch(`https://goscrum-api.alkemy.org/auth/register`, {
+        fetch(`${API_URL}auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -74,9 +81,9 @@ const Register = () => {
             })
         })
         .then(res => res.json())
-        .then(data => console.log(data))
-
-
+        .then(data => navigate('/registered/'+data?.result?.user?.teamID, { replace: true } ))
+        // .then(data => console.log(data?.result?.user?.teamID))
+        .catch( err => console.log(err) )
        
     }
 

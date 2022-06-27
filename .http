@@ -19,7 +19,7 @@ content-type: application/json
 
 {
     "userName": "fede",
-    "password": "federico"
+    "password": "fede"
 }
 
 # GET http://google.com HTTP/1.1

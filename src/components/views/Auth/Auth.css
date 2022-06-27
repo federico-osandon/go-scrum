@@ -26,6 +26,12 @@
 .auth > form > div > *:not(label) {
     padding: 8px 0;
 }
+
+.auth > form > div > input,
+.auth > form > div > select {
+    padding: 8px !important;
+}
+
 .auth > form > div > a{
     text-decoration: none;
     color: #999;
