@@ -1,27 +1,48 @@
-// import { useState, useEffect} from 'react'
+import { useState, useEffect} from 'react'
 import { useResize } from "../../../hooks/useResize"
+import Skeleton from 'react-loading-skeleton'
+
 import Card from "../../card/Card"
 import Header from "../../Header/Header"
 import TaskForm from "../../TaskForm/TaskForm"
-import { cardsData } from "./data"
 
+import 'react-loading-skeleton/dist/skeleton.css'
 import './Task.style.css'
+import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material'
 
+const { VITE_REACT_APP_API_ENDPOINT: API_ENDPOINT } = import.meta.env
 
 const Tasks = () => {
-    
+    const [tasksList, setTasksList] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
     const { isPhone } = useResize()
+
+    useEffect(() => {
+        fetch(`${API_ENDPOINT}task`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setTasksList(data?.result)            // toast('Tu tarea ha sido creada ')
+        })
+        .catch( err => console.log(err) )
+        .finally( () => setIsLoading(false) )
+    }, [])
     
     const limitString = (str) => {
         if (str.length > 170) 
-            return { string: str.slice(0, 167).concat('...'), addButton: true }
-        
+            return { string: str.slice(0, 167).concat('...'), addButton: true }        
         return { string: str, addButton: false }        
     }
 
     const CardList = ({ cards }) => {
-        return cards.map((card) => <Card key={card.id} card={card} limitString={ limitString } />)
-    }
+        return cards?.map((card) => <Card key={card._id} card={card} limitString={ limitString } />)
+    }    
+
+    // console.log(tasksList)
 
     return (
         <>
@@ -32,25 +53,77 @@ const Tasks = () => {
                     <div className="list_header">
                         <h2>Mis Tareas</h2>
                     </div>
+                    <div className="filters">
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                aria-aria-labelledby="demo-row-radio-button-group-label"
+                                name='row-radio-button-group'   
+                            >
+                                <FormControlLabel
+                                    value='All'
+                                    control={<Radio />}
+                                    label='Todas'
+                                />
+                                <FormControlLabel
+                                    value='Me'
+                                    control={<Radio />}
+                                    label='Mis Tareas'
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                        <select name='importance' onChange={()=>{}}>
+                            <option value=''>Seleccionar una prioridad</option>                            
+                            <option value='ALL'>Todas</option>
+                            <option value='LOW'>Baja</option>
+                            <option value='MEDIUM'>Media</option>
+                            <option value='HIGH'>Alta</option>
+                        </select>
+                    </div>
                     {
                         isPhone ? (
                             <div className="list phone">
-                                <CardList cards={cardsData} />                                                                             
+                                { tasksList?.length > 0 ? 
+                                        isLoading ?
+                                                <>
+                                                    <Skeleton height={90} /> 
+                                                    <Skeleton height={90} /> 
+                                                    <Skeleton height={90} /> 
+                                                </> 
+                                            : 
+                                                <CardList cards={tasksList} /> 
+                                    : 
+                                        <p>No Hay Tareas Creadas</p> 
+                                }
                             </div>
                         ) : (
                             <div className="group_list">
-                                <div className="list">
-                                    <h4>Nuevas</h4>
-                                    <CardList cards={cardsData} />
-                                </div>
-                                <div className="list">
-                                    <h4>En Proceso</h4>
-                                    <CardList cards={cardsData} />                                    
-                                </div>
-                                <div className="list">
-                                    <h4>Finalizadas</h4>
-                                    <CardList cards={cardsData} />                                                              
-                                </div>
+                                { tasksList?.length === 0 ? 
+                                        <div className='list'>No Hay Tareas Creadas</div> 
+                                    : 
+                                        (   isLoading ? 
+                                                <>
+                                                    <Skeleton height={100} width={200} /> 
+                                                    <Skeleton height={100} width={200} /> 
+                                                    <Skeleton height={100} width={200} /> 
+                                                </>
+                                            : 
+                                                <>
+                                                    <div className="list">
+                                                        <h4>Nuevas</h4>
+                                                        <CardList cards={ tasksList?.filter(data => data.status === 'NEW')} />
+                                                    </div>
+                                                    <div className="list">
+                                                        <h4>En Proceso</h4>
+                                                        <CardList cards={ tasksList?.filter(data => data.status === 'IN PROGRESS') } />                                    
+                                                    </div>
+                                                    <div className="list">
+                                                        <h4>Finalizadas</h4>
+                                                        <CardList cards={ tasksList?.filter(data => data.status === 'FINISHED') } />                                                              
+                                                    </div>
+                                                </>
+                                        )
+                                }
                             </div>
                         )
                     }

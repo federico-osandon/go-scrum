@@ -6,14 +6,17 @@ const Header = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token')
+        localStorage.removeItem('userName')
         navigate('/login', { replace: true })
     }
 
     return (
         <header>
             <img src='assets/image/go1.svg' />
-            {/* <span>GoScrum</span> */}
-            <div onClick={handleLogout} > X </div>
+            <div className="wrapper_right_header">
+                <div>{localStorage.getItem('userName')}</div>
+                <div onClick={handleLogout} > X </div>
+            </div>
         </header>
     )
 }
