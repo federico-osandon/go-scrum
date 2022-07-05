@@ -1,6 +1,7 @@
 import { useState, useEffect} from 'react'
 import { useResize } from "../../../hooks/useResize"
 import Skeleton from 'react-loading-skeleton'
+import debounce from 'lodash.debounce'
 
 import Card from "../../card/Card"
 import Header from "../../Header/Header"
@@ -16,6 +17,7 @@ const Tasks = () => {
     const [tasksList, setTasksList] = useState(null)
     const [renderListTask, setRenderListTask] = useState(null)
     const [taskFromWho, setTaskFromWho] = useState('ALL')
+    const [search, setSearch] = useState('')
     const [isLoading, setIsLoading] = useState(true)
     const { isPhone } = useResize()
 
@@ -34,6 +36,21 @@ const Tasks = () => {
         .catch( err => console.log(err) )
         .finally( () => setIsLoading(false) )
     }, [taskFromWho])
+
+    useEffect(() => {
+        fetch(`${API_ENDPOINT}task`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setTasksList(data?.result)            // toast('Tu tarea ha sido creada ')
+            setRenderListTask(data?.result)
+        })
+        .catch( err => console.log(err) )        
+    }, [search])
     
     const limitString = (str) => {
         if (str.length > 170) 
@@ -51,6 +68,11 @@ const Tasks = () => {
         else setRenderListTask(tasksList.filter(data => data.importance === event.currentTarget.value))        
     }
 
+    // const handleSearch = debounce(event => {
+    //     setSearch(event?.target?.value)
+    // }, 1000) 
+    const handleSearch = (event) => setSearch(event.currentTarget.value)
+    
 
     // console.log(tasksList)
 
@@ -82,7 +104,18 @@ const Tasks = () => {
                                 />
                             </RadioGroup>
                         </FormControl>
-                        <select name='importance' onChange={handleChangeImportace}>
+                        <div className='search'>
+                            <input 
+                                type="text" 
+                                placeholder='Buscar por título...' 
+                                // value={search}
+                                onChange={handleSearch}
+                            />
+                        </div>
+                        <select 
+                            name='importance' 
+                            onChange={handleChangeImportace}
+                        >
                             <option value=''>Seleccionar una prioridad</option>                            
                             <option value='ALL'>Todas</option>
                             <option value='LOW'>Baja</option>
