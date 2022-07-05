@@ -14,11 +14,13 @@ const { VITE_REACT_APP_API_ENDPOINT: API_ENDPOINT } = import.meta.env
 
 const Tasks = () => {
     const [tasksList, setTasksList] = useState(null)
+    const [renderListTask, setRenderListTask] = useState(null)
+    const [taskFromWho, setTaskFromWho] = useState('ALL')
     const [isLoading, setIsLoading] = useState(true)
     const { isPhone } = useResize()
 
     useEffect(() => {
-        fetch(`${API_ENDPOINT}task`, {
+        fetch(`${API_ENDPOINT}task${taskFromWho === 'ME' ? '/me' : '' }`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -27,10 +29,11 @@ const Tasks = () => {
         .then(res => res.json())
         .then(data => {
             setTasksList(data?.result)            // toast('Tu tarea ha sido creada ')
+            setRenderListTask(data?.result)
         })
         .catch( err => console.log(err) )
         .finally( () => setIsLoading(false) )
-    }, [])
+    }, [taskFromWho])
     
     const limitString = (str) => {
         if (str.length > 170) 
@@ -41,6 +44,13 @@ const Tasks = () => {
     const CardList = ({ cards }) => {
         return cards?.map((card) => <Card key={card._id} card={card} limitString={ limitString } />)
     }    
+
+    // para filtrar tareas creada por copilot
+    const handleChangeImportace = (event) => {  
+        if(event.currentTarget.value === 'ALL') setRenderListTask(tasksList) 
+        else setRenderListTask(tasksList.filter(data => data.importance === event.currentTarget.value))        
+    }
+
 
     // console.log(tasksList)
 
@@ -58,21 +68,21 @@ const Tasks = () => {
                             <RadioGroup
                                 row
                                 aria-aria-labelledby="demo-row-radio-button-group-label"
-                                name='row-radio-button-group'   
+                                onChange={(event)=>setTaskFromWho(event.currentTarget.value)}  
                             >
                                 <FormControlLabel
-                                    value='All'
+                                    value='ALL'
                                     control={<Radio />}
                                     label='Todas'
                                 />
                                 <FormControlLabel
-                                    value='Me'
+                                    value='ME'
                                     control={<Radio />}
                                     label='Mis Tareas'
                                 />
                             </RadioGroup>
                         </FormControl>
-                        <select name='importance' onChange={()=>{}}>
+                        <select name='importance' onChange={handleChangeImportace}>
                             <option value=''>Seleccionar una prioridad</option>                            
                             <option value='ALL'>Todas</option>
                             <option value='LOW'>Baja</option>
@@ -83,7 +93,7 @@ const Tasks = () => {
                     {
                         isPhone ? (
                             <div className="list phone">
-                                { tasksList?.length > 0 ? 
+                                { renderListTask?.length > 0 ? 
                                         isLoading ?
                                                 <>
                                                     <Skeleton height={90} /> 
@@ -91,14 +101,14 @@ const Tasks = () => {
                                                     <Skeleton height={90} /> 
                                                 </> 
                                             : 
-                                                <CardList cards={tasksList} /> 
+                                                <CardList cards={renderListTask} /> 
                                     : 
                                         <p>No Hay Tareas Creadas</p> 
                                 }
                             </div>
                         ) : (
                             <div className="group_list">
-                                { tasksList?.length === 0 ? 
+                                { renderListTask?.length === 0 ? 
                                         <div className='list'>No Hay Tareas Creadas</div> 
                                     : 
                                         (   isLoading ? 
@@ -111,15 +121,15 @@ const Tasks = () => {
                                                 <>
                                                     <div className="list">
                                                         <h4>Nuevas</h4>
-                                                        <CardList cards={ tasksList?.filter(data => data.status === 'NEW')} />
+                                                        <CardList cards={ renderListTask?.filter(data => data.status === 'NEW')} />
                                                     </div>
                                                     <div className="list">
                                                         <h4>En Proceso</h4>
-                                                        <CardList cards={ tasksList?.filter(data => data.status === 'IN PROGRESS') } />                                    
+                                                        <CardList cards={ renderListTask?.filter(data => data.status === 'IN PROGRESS') } />                                    
                                                     </div>
                                                     <div className="list">
                                                         <h4>Finalizadas</h4>
-                                                        <CardList cards={ tasksList?.filter(data => data.status === 'FINISHED') } />                                                              
+                                                        <CardList cards={ renderListTask?.filter(data => data.status === 'FINISHED') } />                                                              
                                                     </div>
                                                 </>
                                         )
