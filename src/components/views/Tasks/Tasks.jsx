@@ -55,18 +55,13 @@ const Tasks = () => {
         // .catch( err => console.log(err) )        
     }, [search])
     
-    const limitString = (str) => {
-        if (str.length > 170) 
-            return { string: str.slice(0, 167).concat('...'), addButton: true }        
-        return { string: str, addButton: false }        
-    }
-
+    
     const renderColumCard = (text) => {
         return renderListTask?.filter(data => data.status === text)
     }
 
     const CardList = ({ cards }) => {
-        return cards?.map((card) => <Card key={card._id} card={card} limitString={ limitString } />)
+        return cards?.map((card) => <Card key={card._id} card={card} />)
     }    
 
     // para filtrar tareas creada por copilot
