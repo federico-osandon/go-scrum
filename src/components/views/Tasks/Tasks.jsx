@@ -38,24 +38,31 @@ const Tasks = () => {
     }, [taskFromWho])
 
     useEffect(() => {
-        fetch(`${API_ENDPOINT}task`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            setTasksList(data?.result)            // toast('Tu tarea ha sido creada ')
-            setRenderListTask(data?.result)
-        })
-        .catch( err => console.log(err) )        
+        if (search) {
+            setRenderListTask(tasksList.filter(data => data.title.startsWith(search)) )
+        }else setRenderListTask(tasksList)
+        // fetch(`${API_ENDPOINT}task`, {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': `Bearer ${localStorage.getItem('token')}`
+        //     }
+        // })
+        // .then(res => res.json())
+        // .then(data => {
+        //     setTasksList(data?.result)            // toast('Tu tarea ha sido creada ')
+        //     setRenderListTask(data?.result)
+        // })
+        // .catch( err => console.log(err) )        
     }, [search])
     
     const limitString = (str) => {
         if (str.length > 170) 
             return { string: str.slice(0, 167).concat('...'), addButton: true }        
         return { string: str, addButton: false }        
+    }
+
+    const renderColumCard = (text) => {
+        return renderListTask?.filter(data => data.status === text)
     }
 
     const CardList = ({ cards }) => {
@@ -68,10 +75,10 @@ const Tasks = () => {
         else setRenderListTask(tasksList.filter(data => data.importance === event.currentTarget.value))        
     }
 
-    // const handleSearch = debounce(event => {
-    //     setSearch(event?.target?.value)
-    // }, 1000) 
-    const handleSearch = (event) => setSearch(event.currentTarget.value)
+    const handleSearch = debounce(event => {
+        setSearch(event?.target?.value)
+    }, 1000) 
+
     
 
     // console.log(tasksList)
@@ -154,15 +161,15 @@ const Tasks = () => {
                                                 <>
                                                     <div className="list">
                                                         <h4>Nuevas</h4>
-                                                        <CardList cards={ renderListTask?.filter(data => data.status === 'NEW')} />
+                                                        <CardList cards={ renderColumCard('NEW') } />
                                                     </div>
                                                     <div className="list">
                                                         <h4>En Proceso</h4>
-                                                        <CardList cards={ renderListTask?.filter(data => data.status === 'IN PROGRESS') } />                                    
+                                                        <CardList cards={ renderColumCard('IN PROGRESS') } />                                    
                                                     </div>
                                                     <div className="list">
                                                         <h4>Finalizadas</h4>
-                                                        <CardList cards={ renderListTask?.filter(data => data.status === 'FINISHED') } />                                                              
+                                                        <CardList cards={ renderColumCard('FINISHED') } />                                                              
                                                     </div>
                                                 </>
                                         )
