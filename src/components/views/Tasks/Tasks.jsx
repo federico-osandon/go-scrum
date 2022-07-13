@@ -2,67 +2,60 @@ import { useState, useEffect} from 'react'
 import { useResize } from "../../../hooks/useResize"
 import Skeleton from 'react-loading-skeleton'
 import debounce from 'lodash.debounce'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Card from "../../card/Card"
 import Header from "../../Header/Header"
 import TaskForm from "../../TaskForm/TaskForm"
+import { getTask, deleteTask } from '../../../store/actions/taskAction'
 
 import 'react-loading-skeleton/dist/skeleton.css'
 import './Task.style.css'
 import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material'
 
-const { VITE_REACT_APP_API_ENDPOINT: API_ENDPOINT } = import.meta.env
 
 const Tasks = () => {
     const [tasksList, setTasksList] = useState(null)
     const [renderListTask, setRenderListTask] = useState(null)
     const [taskFromWho, setTaskFromWho] = useState('ALL')
     const [search, setSearch] = useState('')
-    const [isLoading, setIsLoading] = useState(true)
+    // const [isLoading, setIsLoading] = useState(true)
     const { isPhone } = useResize()
 
+    const dispatch = useDispatch()
+
     useEffect(() => {
-        fetch(`${API_ENDPOINT}task${taskFromWho === 'ME' ? '/me' : '' }`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            setTasksList(data?.result)            // toast('Tu tarea ha sido creada ')
-            setRenderListTask(data?.result)
-        })
-        .catch( err => console.log(err) )
-        .finally( () => setIsLoading(false) )
+        dispatch(getTask(taskFromWho === 'ME' ? '/me' : '' )) 
     }, [taskFromWho])
+
+    const {error, tasks, loading} = useSelector(state => state.taskReducer)
+    console.log(tasks)
 
     useEffect(() => {
         if (search) {
             setRenderListTask(tasksList.filter(data => data.title.startsWith(search)) )
         }else setRenderListTask(tasksList)
-        // fetch(`${API_ENDPOINT}task`, {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': `Bearer ${localStorage.getItem('token')}`
-        //     }
-        // })
-        // .then(res => res.json())
-        // .then(data => {
-        //     setTasksList(data?.result)            // toast('Tu tarea ha sido creada ')
-        //     setRenderListTask(data?.result)
-        // })
-        // .catch( err => console.log(err) )        
+             
     }, [search])
+
+    useEffect(() => {
+        if (tasks?.length) {
+            setTasksList(tasks)
+            setRenderListTask(tasks)
+        }
+    }, [tasks])
     
-    
+    if (error) return <div>Hay un error: {error}</div>
     const renderColumCard = (text) => {
         return renderListTask?.filter(data => data.status === text)
     }
 
     const CardList = ({ cards }) => {
-        return cards?.map((card) => <Card key={card._id} card={card} />)
-    }    
+        return cards?.map((card) => <Card key={card._id} card={card} deleteCard={deleteCard} />)
+    } 
+    
+    const deleteCard = id => dispatch(deleteTask(id))
+    
 
     // para filtrar tareas creada por copilot
     const handleChangeImportace = (event) => {  
@@ -129,7 +122,7 @@ const Tasks = () => {
                         isPhone ? (
                             <div className="list phone">
                                 { renderListTask?.length > 0 ? 
-                                        isLoading ?
+                                        loading ?
                                                 <>
                                                     <Skeleton height={90} /> 
                                                     <Skeleton height={90} /> 
@@ -146,7 +139,7 @@ const Tasks = () => {
                                 { renderListTask?.length === 0 ? 
                                         <div className='list'>No Hay Tareas Creadas</div> 
                                     : 
-                                        (   isLoading ? 
+                                        (   loading ? 
                                                 <>
                                                     <Skeleton height={100} width={200} /> 
                                                     <Skeleton height={100} width={200} /> 

@@ -34,7 +34,9 @@ const pageTransition = {
 }
 
 const App = () => {
+    
     const location = useLocation()
+
     return (     
         <>
             <AnimatePresence>

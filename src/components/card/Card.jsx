@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 const Card = ({      
     card: { 
+        _id,
         title, 
         createdAt, 
         user: {
@@ -10,7 +11,8 @@ const Card = ({
         status, 
         importance, 
         description 
-    } 
+    }, 
+    deleteCard
 }) => {   
     const [ showMore, setShowMore ] = useState(false)
     const date = new Date(createdAt).toLocaleString() + ' hs.'
@@ -23,7 +25,7 @@ const Card = ({
 
     return (
         <div className="card">
-            <div className="close"> X </div>
+            <div className="close" onClick={()=> deleteCard(_id)}> X </div>
             <h3>{ title }</h3>
             <h6>{ date }</h6>
             <h5>{ userName }</h5>
