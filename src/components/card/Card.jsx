@@ -12,7 +12,9 @@ const Card = ({
         importance, 
         description 
     }, 
-    deleteCard
+    deleteCard,
+    editCardStatus,
+    card
 }) => {   
     const [ showMore, setShowMore ] = useState(false)
     const date = new Date(createdAt).toLocaleString() + ' hs.'
@@ -29,7 +31,11 @@ const Card = ({
             <h3>{ title }</h3>
             <h6>{ date }</h6>
             <h5>{ userName }</h5>
-            <button type="button" className={ status.toLowerCase() }>
+            <button 
+                type="button" 
+                className={ status.toLowerCase() }
+                onClick={() => editCardStatus(card) }
+            >
                 { status.toLowerCase() }
             </button>
             <button type="button" className={ importance.toLowerCase() }>

@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Card from "../../card/Card"
 import Header from "../../Header/Header"
 import TaskForm from "../../TaskForm/TaskForm"
-import { getTask, deleteTask } from '../../../store/actions/taskAction'
+import { getTask, deleteTask, editTaskStatus } from '../../../store/actions/taskAction'
 
 import 'react-loading-skeleton/dist/skeleton.css'
 import './Task.style.css'
@@ -26,10 +26,10 @@ const Tasks = () => {
 
     useEffect(() => {
         dispatch(getTask(taskFromWho === 'ME' ? '/me' : '' )) 
-    }, [taskFromWho])
+    }, [taskFromWho, dispatch])
 
     const {error, tasks, loading} = useSelector(state => state.taskReducer)
-    console.log(tasks)
+    // console.log(tasks)
 
     useEffect(() => {
         if (search) {
@@ -51,10 +51,17 @@ const Tasks = () => {
     }
 
     const CardList = ({ cards }) => {
-        return cards?.map((card) => <Card key={card._id} card={card} deleteCard={deleteCard} />)
+        return cards?.map((card) => <Card 
+                                        key={card._id} 
+                                        card={card} 
+                                        deleteCard={deleteCard} 
+                                        editCardStatus={editCardStatus}
+                                    />
+                        )
     } 
     
     const deleteCard = id => dispatch(deleteTask(id))
+    const editCardStatus = data => dispatch(editTaskStatus(data))
     
 
     // para filtrar tareas creada por copilot

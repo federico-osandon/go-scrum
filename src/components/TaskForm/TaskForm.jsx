@@ -1,12 +1,17 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { ToastContainer, toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+
 import 'react-toastify/dist/ReactToastify.css'
 import './TaskForm.style.css'
+import { createTask } from '../../store/actions/taskAction'
 
 const { VITE_REACT_APP_API_ENDPOINT: API_ENDPOINT } = import.meta.env
 
 const TaskForm = () => {
+
+    const dispatch = useDispatch()
 
     const initialValues = {
         title: '',
@@ -31,22 +36,23 @@ const TaskForm = () => {
 
 
     const onSubmit = () => {// e.preventDefault()
-        fetch(`${API_ENDPOINT}task`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                task: values
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            toast('Tu tarea ha sido creada ')
-        })
-        .catch( err => console.log(err) )
-        .finally( () => resetForm() )
+        dispatch(createTask(values))
+        // fetch(`${API_ENDPOINT}task`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': `Bearer ${localStorage.getItem('token')}`
+        //     },
+        //     body: JSON.stringify({
+        //         task: values
+        //     })
+        // })
+        // .then(res => res.json())
+        // .then(data => {
+        //     toast('Tu tarea ha sido creada ')
+        // })
+        // .catch( err => console.log(err) )
+        // .finally( () => resetForm() )
         
     }
 
