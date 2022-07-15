@@ -7,7 +7,9 @@ import { store } from './store/store'
 import './index.css'
 
 createRoot(document.getElementById('root')).render(
-    <BrowserRouter>
+    <BrowserRouter 
+        //basename='go-scrum/'
+    >
         <Provider store={store}>
             <App />
         </Provider>
