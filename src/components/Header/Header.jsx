@@ -12,10 +12,13 @@ const Header = () => {
         localStorage.removeItem('userName')
         navigate('/login', { replace: true })
     }
-
+    console.log(import.meta.env.MODE)
     return (
         <header>
             <img src='assets/image/go1.svg' />
+            <center>
+                <span>{import.meta.env.MODE}</span>
+            </center>
             <div className="wrapper_right_header">
                 <div>
                     <button onClick={()=> navigate('/donate', { replace: true } )}>
