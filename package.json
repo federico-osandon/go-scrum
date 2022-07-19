@@ -1,6 +1,5 @@
 {
   "name": "go-scrum",
-  "homepage": "https://github.com/federico-osandon/go-scrum",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -9,7 +8,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@babel/preset-env": "^7.18.6",
